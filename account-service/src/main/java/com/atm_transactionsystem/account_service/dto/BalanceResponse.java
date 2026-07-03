@@ -1,4 +1,4 @@
-package com.atm_transactionsystem.transaction_service.dto;
+package com.atm_transactionsystem.account_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class DepositRequest {
+public class BalanceResponse {
 
     private String accountNumber;
-
-    private double amount;
-
+    private double balance;
 }

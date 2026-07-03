@@ -13,6 +13,8 @@ import com.atm_transactionsystem.account_service.exception.AccountNotFoundExcept
 import com.atm_transactionsystem.account_service.exception.InsufficientBalanceException;
 import com.atm_transactionsystem.account_service.repository.AccountRepository;
 import com.atm_transactionsystem.account_service.feign.CustomerClient;
+import com.atm_transactionsystem.account_service.dto.DepositResponse;
+import com.atm_transactionsystem.account_service.dto.WithdrawResponse;
 @Service
 public class AccountService {
 
@@ -22,9 +24,8 @@ public class AccountService {
     @Autowired
     private CustomerClient customerClient;
 
-    // ----------------------------
+
     // Create Account
-    // ----------------------------
     public String createAccount(CreateAccountRequest request) {
         customerClient.getCustomer(request.getCustomerId());
         Account account = new Account();
@@ -40,21 +41,15 @@ public class AccountService {
         return "Account Created Successfully\nAccount Number : "
                 + account.getAccountNumber();
     }
-
-    // ----------------------------
     // Search Account
-    // ----------------------------
     public Account getAccount(String accountNumber) {
 
         return repository.findByAccountNumber(accountNumber)
                 .orElseThrow(() ->
                         new AccountNotFoundException("Account Not Found"));
     }
-
-    // ----------------------------
     // Deposit
-    // ----------------------------
-    public String deposit(DepositRequest request) {
+    public DepositResponse deposit(DepositRequest request) {
 
         Account account = getAccount(request.getAccountNumber());
 
@@ -63,14 +58,20 @@ public class AccountService {
 
         repository.save(account);
 
-        return "Deposit Successful\nCurrent Balance : "
-                + account.getBalance();
-    }
+        return new DepositResponse(
 
-    // ----------------------------
+                "Deposit Successful",
+
+                account.getAccountNumber(),
+
+                request.getAmount(),
+
+                account.getBalance()
+
+        );
+    }
     // Withdraw
-    // ----------------------------
-    public String withdraw(WithdrawRequest request) {
+    public WithdrawResponse withdraw(WithdrawRequest request){
 
         Account account = getAccount(request.getAccountNumber());
 
@@ -85,13 +86,17 @@ public class AccountService {
 
         repository.save(account);
 
-        return "Withdrawal Successful\nCurrent Balance : "
-                + account.getBalance();
+        return new WithdrawResponse(
+                "Withdrawal Successful",
+                account.getAccountNumber(),
+                request.getAmount(),
+                account.getBalance()
+        );
     }
 
-    // ----------------------------
+
     // Check Balance
-    // ----------------------------
+
     public double checkBalance(String accountNumber) {
 
         Account account = getAccount(accountNumber);
@@ -99,9 +104,9 @@ public class AccountService {
         return account.getBalance();
     }
 
-    // ----------------------------
+
     // Generate Account Number
-    // ----------------------------
+
     private String generateAccountNumber() {
 
         Random random = new Random();

@@ -14,7 +14,7 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil {
 
-    // Secret key (minimum 32 characters)
+    // Secret key (min 32 characters)
     private static final String SECRET =
             "ThisIsMySecretKeyForJwtAuthentication12345";
 

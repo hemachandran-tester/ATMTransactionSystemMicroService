@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.atm_transactionsystem.customer_service.dto.CustomerRequest;
-import com.atm_transactionsystem.customer_service.entity.Customer;
+import com.atm_transactionsystem.customer_service.dto.CustomerResponse;
 import com.atm_transactionsystem.customer_service.service.CustomerService;
 
 import jakarta.validation.Valid;
@@ -21,18 +21,21 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<String> createCustomer(
+    public ResponseEntity<CustomerResponse> createCustomer(
             @Valid @RequestBody CustomerRequest request) {
 
-        String response = customerService.createCustomer(request);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                customerService.createCustomer(request),
+                HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getCustomer(
+    public ResponseEntity<CustomerResponse> getCustomer(
             @PathVariable Long id) {
 
-        return ResponseEntity.ok(customerService.getCustomer(id));
+        return ResponseEntity.ok(
+                customerService.getCustomer(id)
+        );
     }
 }

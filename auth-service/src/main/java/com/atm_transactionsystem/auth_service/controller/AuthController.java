@@ -7,12 +7,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.atm_transactionsystem.auth_service.dto.LoginRequest;
+import com.atm_transactionsystem.auth_service.dto.LoginResponse;
 import com.atm_transactionsystem.auth_service.dto.RegisterRequest;
+import com.atm_transactionsystem.auth_service.dto.RegisterResponse;
 import com.atm_transactionsystem.auth_service.service.AuthService;
-import com.atm_transactionsystem.auth_service.dto.AuthResponse;
+
 import jakarta.validation.Valid;
-import com.atm_transactionsystem.auth_service.dto.AuthResponse;
-import com.atm_transactionsystem.auth_service.dto.LoginRequest;
+
 @RestController
 @RequestMapping("/auth")
 @Validated
@@ -22,16 +23,17 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(
+    public ResponseEntity<RegisterResponse> register(
             @Valid @RequestBody RegisterRequest request) {
 
         return new ResponseEntity<>(
                 authService.register(request),
-                HttpStatus.CREATED);
+                HttpStatus.CREATED
+        );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(
+    public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request) {
 
         return ResponseEntity.ok(authService.login(request));

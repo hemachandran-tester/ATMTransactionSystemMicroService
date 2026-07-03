@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.atm_transactionsystem.auth_service.dto.AuthResponse;
 import com.atm_transactionsystem.auth_service.dto.LoginRequest;
+import com.atm_transactionsystem.auth_service.dto.LoginResponse;
 import com.atm_transactionsystem.auth_service.dto.RegisterRequest;
+import com.atm_transactionsystem.auth_service.dto.RegisterResponse;
 import com.atm_transactionsystem.auth_service.entity.User;
 import com.atm_transactionsystem.auth_service.exception.InvalidCredentialsException;
 import com.atm_transactionsystem.auth_service.exception.UserAlreadyExistsException;
@@ -26,7 +27,7 @@ public class AuthService {
     private JwtUtil jwtUtil;
 
     // Register a new user
-    public String register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
 
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserAlreadyExistsException("Username already exists");
@@ -39,11 +40,15 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return "User Registered Successfully";
+        return new RegisterResponse(
+                "User Registered Successfully",
+                user.getUsername(),
+                user.getRole()
+        );
     }
 
     // Login user
-    public AuthResponse login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() ->
@@ -55,6 +60,11 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(user.getUsername());
 
-        return new AuthResponse(token);
+        return new LoginResponse(
+                "Login Successful",
+                user.getUsername(),
+                user.getRole(),
+                token
+        );
     }
 }

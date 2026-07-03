@@ -4,8 +4,8 @@ import java.util.concurrent.Callable;
 
 import com.atm_transactionsystem.transaction_service.dto.WithdrawRequest;
 import com.atm_transactionsystem.transaction_service.feign.AccountClient;
-
-public class WithdrawTask implements Callable<String> {
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
+public class WithdrawTask implements Callable<WithdrawResponse> {
 
     private final AccountClient accountClient;
     private final WithdrawRequest request;
@@ -18,9 +18,7 @@ public class WithdrawTask implements Callable<String> {
     }
 
     @Override
-    public String call() {
-
+    public WithdrawResponse call() {
         return accountClient.withdraw(request);
-
     }
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.atm_transactionsystem.account_service.dto.CreateAccountRequest;
 import com.atm_transactionsystem.account_service.dto.DepositRequest;
+import com.atm_transactionsystem.account_service.dto.DepositResponse;
 import com.atm_transactionsystem.account_service.dto.WithdrawRequest;
+import com.atm_transactionsystem.account_service.dto.WithdrawResponse;
 import com.atm_transactionsystem.account_service.entity.Account;
 import com.atm_transactionsystem.account_service.service.AccountService;
 
@@ -22,7 +24,7 @@ public class AccountController {
     @Autowired
     private AccountService service;
 
-    // Create Account
+    // Creating and Account
     @PostMapping
     public ResponseEntity<String> createAccount(
             @Valid @RequestBody CreateAccountRequest request) {
@@ -32,7 +34,7 @@ public class AccountController {
                 HttpStatus.CREATED);
     }
 
-    // Search Account
+    // Search the Account
     @GetMapping("/{accountNumber}")
     public ResponseEntity<Account> searchAccount(
             @PathVariable String accountNumber) {
@@ -41,25 +43,25 @@ public class AccountController {
                 service.getAccount(accountNumber));
     }
 
-    // Deposit
+    // Deposit money
     @PostMapping("/deposit")
-    public ResponseEntity<String> deposit(
+    public ResponseEntity<DepositResponse> deposit(
             @Valid @RequestBody DepositRequest request) {
 
         return ResponseEntity.ok(
                 service.deposit(request));
     }
 
-    // Withdraw
+    // Withdraw money
     @PostMapping("/withdraw")
-    public ResponseEntity<String> withdraw(
+    public ResponseEntity<WithdrawResponse> withdraw(
             @Valid @RequestBody WithdrawRequest request) {
 
         return ResponseEntity.ok(
                 service.withdraw(request));
     }
 
-    // Balance
+    // to check Balance
     @GetMapping("/balance/{accountNumber}")
     public ResponseEntity<Double> balance(
             @PathVariable String accountNumber) {

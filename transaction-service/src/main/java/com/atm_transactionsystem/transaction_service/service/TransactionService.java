@@ -18,7 +18,8 @@ import com.atm_transactionsystem.transaction_service.tasks.DepositTask;
 import com.atm_transactionsystem.transaction_service.tasks.TransferTask;
 import com.atm_transactionsystem.transaction_service.tasks.WithdrawTask;
 import com.atm_transactionsystem.transaction_service.feign.AccountClient;
-
+import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
 @Service
 public class TransactionService {
 
@@ -30,53 +31,53 @@ public class TransactionService {
 
     private final ExecutorService executor =
             Executors.newFixedThreadPool(5);
-
-    public String deposit(DepositRequest request) throws Exception {
+    public DepositResponse deposit(DepositRequest request) throws Exception {
 
         DepositTask task = new DepositTask(accountClient, request);
 
-        Future<String> future = executor.submit(task);
+        Future<DepositResponse> future = executor.submit(task);
+
+        DepositResponse response = future.get();
 
         Transaction transaction = new Transaction();
 
-        transaction.setAccountNumber(request.getAccountNumber());
+        transaction.setAccountNumber(response.getAccountNumber());
         transaction.setTransactionType("DEPOSIT");
-        transaction.setAmount(request.getAmount());
+        transaction.setAmount(response.getAmount());
 
-        Double balance =
-                accountClient.getBalance(request.getAccountNumber());
-
-        transaction.setBalanceAfterTransaction(balance);
+        transaction.setBalanceAfterTransaction(
+                response.getBalanceAfterTransaction());
         transaction.setTransactionDate(LocalDateTime.now());
         transaction.setStatus("SUCCESS");
 
         repository.save(transaction);
 
-        return future.get();
+        return response;
     }
 
-    public String withdraw(WithdrawRequest request) throws Exception {
+    public WithdrawResponse withdraw(WithdrawRequest request) throws Exception {
 
         WithdrawTask task = new WithdrawTask(accountClient, request);
 
-        Future<String> future = executor.submit(task);
+        Future<WithdrawResponse> future = executor.submit(task);
+
+        // Wait for Account Service to complete the withdrawal
+        WithdrawResponse response = future.get();
 
         Transaction transaction = new Transaction();
 
-        transaction.setAccountNumber(request.getAccountNumber());
+        transaction.setAccountNumber(response.getAccountNumber());
         transaction.setTransactionType("WITHDRAW");
-        transaction.setAmount(request.getAmount());
+        transaction.setAmount(response.getAmount());
 
-        Double balance =
-                accountClient.getBalance(request.getAccountNumber());
-
-        transaction.setBalanceAfterTransaction(balance);
+        transaction.setBalanceAfterTransaction(
+                response.getBalanceAfterTransaction());
         transaction.setTransactionDate(LocalDateTime.now());
         transaction.setStatus("SUCCESS");
 
         repository.save(transaction);
 
-        return future.get();
+        return response;
     }
 
     public String transfer(TransferRequest request) throws Exception {

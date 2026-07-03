@@ -8,11 +8,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.atm_transactionsystem.transaction_service.dto.DepositRequest;
+import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
+import com.atm_transactionsystem.transaction_service.dto.TransferRequest;
+import com.atm_transactionsystem.transaction_service.dto.TransferResponse;
+import com.atm_transactionsystem.transaction_service.dto.TransactionHistoryResponse;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawRequest;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
+import com.atm_transactionsystem.transaction_service.service.TransactionService;
+import com.atm_transactionsystem.transaction_service.dto.DepositRequest;
+import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
 import com.atm_transactionsystem.transaction_service.dto.TransferRequest;
 import com.atm_transactionsystem.transaction_service.dto.WithdrawRequest;
-import com.atm_transactionsystem.transaction_service.entity.Transaction;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
+import com.atm_transactionsystem.transaction_service.entity.Transaction;   // <-- ADD THIS
 import com.atm_transactionsystem.transaction_service.service.TransactionService;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -24,7 +33,7 @@ public class TransactionController {
     private TransactionService service;
 
     @PostMapping("/deposit")
-    public ResponseEntity<String> deposit(
+    public ResponseEntity<DepositResponse> deposit(
             @Valid @RequestBody DepositRequest request)
             throws Exception {
 
@@ -33,7 +42,7 @@ public class TransactionController {
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<String> withdraw(
+    public ResponseEntity<WithdrawResponse> withdraw(
             @Valid @RequestBody WithdrawRequest request)
             throws Exception {
 

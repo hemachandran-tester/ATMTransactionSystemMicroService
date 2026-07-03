@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.atm_transactionsystem.transaction_service.dto.DepositRequest;
 import com.atm_transactionsystem.transaction_service.dto.WithdrawRequest;
-
+import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
 @FeignClient(name = "account-service")
 public interface AccountClient {
 
     @PostMapping("/accounts/deposit")
-    String deposit(@RequestBody DepositRequest request);
+    DepositResponse deposit(@RequestBody DepositRequest request);
 
     @PostMapping("/accounts/withdraw")
-    String withdraw(@RequestBody WithdrawRequest request);
+    WithdrawResponse withdraw(@RequestBody WithdrawRequest request);
 
     @GetMapping("/accounts/balance/{accountNumber}")
     Double getBalance(@PathVariable String accountNumber);
