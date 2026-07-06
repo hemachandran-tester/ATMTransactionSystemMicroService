@@ -9,17 +9,20 @@ import java.util.concurrent.Future;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.atm_transactionsystem.transaction_service.dto.AccountDepositResponse;
+import com.atm_transactionsystem.transaction_service.dto.AccountWithdrawResponse;
 import com.atm_transactionsystem.transaction_service.dto.DepositRequest;
+import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
 import com.atm_transactionsystem.transaction_service.dto.TransferRequest;
 import com.atm_transactionsystem.transaction_service.dto.WithdrawRequest;
+import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
 import com.atm_transactionsystem.transaction_service.entity.Transaction;
+import com.atm_transactionsystem.transaction_service.feign.AccountClient;
 import com.atm_transactionsystem.transaction_service.repository.TransactionRepository;
 import com.atm_transactionsystem.transaction_service.tasks.DepositTask;
 import com.atm_transactionsystem.transaction_service.tasks.TransferTask;
 import com.atm_transactionsystem.transaction_service.tasks.WithdrawTask;
-import com.atm_transactionsystem.transaction_service.feign.AccountClient;
-import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
-import com.atm_transactionsystem.transaction_service.dto.WithdrawResponse;
+
 @Service
 public class TransactionService {
 
@@ -31,54 +34,82 @@ public class TransactionService {
 
     private final ExecutorService executor =
             Executors.newFixedThreadPool(5);
+
+    // --------------------------------------------------
+    // Deposit
+    // --------------------------------------------------
+
     public DepositResponse deposit(DepositRequest request) throws Exception {
 
         DepositTask task = new DepositTask(accountClient, request);
 
-        Future<DepositResponse> future = executor.submit(task);
+        Future<AccountDepositResponse> future = executor.submit(task);
 
-        DepositResponse response = future.get();
+        AccountDepositResponse accountResponse = future.get();
 
         Transaction transaction = new Transaction();
 
-        transaction.setAccountNumber(response.getAccountNumber());
+        transaction.setAccountNumber(accountResponse.getAccountNumber());
         transaction.setTransactionType("DEPOSIT");
-        transaction.setAmount(response.getAmount());
-
+        transaction.setAmount(accountResponse.getDepositedAmount());
         transaction.setBalanceAfterTransaction(
-                response.getBalanceAfterTransaction());
+                accountResponse.getCurrentBalance());
         transaction.setTransactionDate(LocalDateTime.now());
         transaction.setStatus("SUCCESS");
 
-        repository.save(transaction);
+        transaction = repository.save(transaction);
 
-        return response;
+        return new DepositResponse(
+                accountResponse.getMessage(),
+                transaction.getTransactionId(),
+                transaction.getAccountNumber(),
+                transaction.getTransactionType(),
+                transaction.getAmount(),
+                transaction.getBalanceAfterTransaction(),
+                transaction.getStatus(),
+                transaction.getTransactionDate()
+        );
     }
+
+    // --------------------------------------------------
+    // Withdraw
+    // --------------------------------------------------
 
     public WithdrawResponse withdraw(WithdrawRequest request) throws Exception {
 
         WithdrawTask task = new WithdrawTask(accountClient, request);
 
-        Future<WithdrawResponse> future = executor.submit(task);
+        Future<AccountWithdrawResponse> future = executor.submit(task);
 
-        // Wait for Account Service to complete the withdrawal
-        WithdrawResponse response = future.get();
+        AccountWithdrawResponse accountResponse = future.get();
 
         Transaction transaction = new Transaction();
 
-        transaction.setAccountNumber(response.getAccountNumber());
+        transaction.setAccountNumber(accountResponse.getAccountNumber());
         transaction.setTransactionType("WITHDRAW");
-        transaction.setAmount(response.getAmount());
-
+        transaction.setAmount(accountResponse.getWithdrawnAmount());
         transaction.setBalanceAfterTransaction(
-                response.getBalanceAfterTransaction());
+                accountResponse.getCurrentBalance());
         transaction.setTransactionDate(LocalDateTime.now());
         transaction.setStatus("SUCCESS");
 
-        repository.save(transaction);
+        transaction = repository.save(transaction);
 
-        return response;
+        return new WithdrawResponse(
+                accountResponse.getMessage(),
+                transaction.getTransactionId(),
+                transaction.getAccountNumber(),
+                transaction.getTransactionType(),
+                transaction.getAmount(),
+                transaction.getBalanceAfterTransaction(),
+                transaction.getStatus(),
+                transaction.getTransactionDate()
+        );
     }
+
+    // --------------------------------------------------
+    // Transfer
+    // --------------------------------------------------
 
     public String transfer(TransferRequest request) throws Exception {
 
@@ -89,10 +120,10 @@ public class TransactionService {
         return future.get();
     }
 
+    // Transaction History
+
     public List<Transaction> history(String accountNumber) {
 
         return repository.findByAccountNumber(accountNumber);
-
     }
-
 }

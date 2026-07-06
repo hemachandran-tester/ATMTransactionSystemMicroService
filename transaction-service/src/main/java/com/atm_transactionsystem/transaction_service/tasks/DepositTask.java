@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.atm_transactionsystem.transaction_service.dto.DepositRequest;
 import com.atm_transactionsystem.transaction_service.feign.AccountClient;
 import com.atm_transactionsystem.transaction_service.dto.DepositResponse;
-public class DepositTask implements Callable<DepositResponse>{
+import com.atm_transactionsystem.transaction_service.dto.AccountDepositResponse;
+public class DepositTask implements Callable<AccountDepositResponse>{
 
     private final AccountClient accountClient;
     private final DepositRequest request;
@@ -20,7 +21,7 @@ public class DepositTask implements Callable<DepositResponse>{
     }
 
     @Override
-    public DepositResponse call() {
+    public AccountDepositResponse call() {
         return accountClient.deposit(request);
     }
 }

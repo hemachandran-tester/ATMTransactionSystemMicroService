@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bfb2f199-d99d-41f6-b563-41cc4e0a983f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/dto/AccountDepositResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/dto/AccountWithdrawResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/feign/AccountClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/feign/AccountClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/tasks/DepositTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/tasks/DepositTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/tasks/WithdrawTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service/tasks/WithdrawTask.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="3FybRzRizFWHA01RtEJ8DfH2tni" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/ATMTransactionSystemMicroService/transaction-service/src/main/java/com/atm_transactionsystem/transaction_service&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\ATMTransactionSystemMicroService\transaction-service\src\main\java\com\atm_transactionsystem\transaction_service" />
+      <recent name="E:\ATMTransactionSystemMicroService\customer-service\src\main\java\com\atm_transactionsystem\customer_service" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\ATMTransactionSystemMicroService\auth-service\src\main\java\com\atm_transactionsystem\auth_service" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ATMTransactionSystemMicroService" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="ATMTransactionSystemMicroService" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bfb2f199-d99d-41f6-b563-41cc4e0a983f" name="Changes" comment="" />
+      <created>1783050252286</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1783050252286</updated>
+    </task>
+    <servers />
+  </component>
+</project>
